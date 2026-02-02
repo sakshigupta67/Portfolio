@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base */
+:root {
+  --bg-primary: #100425;
+  --bg-secondary: #1a0a30;
+  --color-magenta: #DC00D3;
+  --color-cyan: #0CFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #100425 0%, #1a0a30 50%, #0d0320 100%);
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Josefin Sans', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-magenta), var(--color-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient border */
+.gradient-border {
+  position: relative;
+  background: rgba(16, 4, 37, 0.8);
+  border-radius: 1rem;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-magenta), var(--color-cyan));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(16, 4, 37, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(12, 255, 255, 0.1);
+}
+
+/* Glowing button */
+.btn-glow {
+  background: linear-gradient(135deg, var(--color-magenta), var(--color-cyan));
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(220, 0, 211, 0.3);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(12, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Outline button */
+.btn-outline {
+  border: 1px solid var(--color-cyan);
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  color: var(--color-cyan);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(12, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(12, 255, 255, 0.2);
+}
+
+/* Section heading style */
+.section-heading {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--color-magenta), var(--color-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .section-heading {
+    font-size: 2.5rem;
+  }
+}
+
+/* Orbit animation for decorative elements */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+}
+
+.orbit-element {
+  animation: orbit 20s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  nav, .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+}
+
+/* Orbit border animation utilities */
+@layer utilities {
+  @keyframes orbit-rotate {
+    to { transform: rotate(360deg); }
+  }
+  .animate-orbit {
+    animation: orbit-rotate 8s linear infinite;
+  }
+  .orbit-border {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .animate-float-slow {
+    animation: float-y 4s ease-in-out infinite;
+  }
+}
