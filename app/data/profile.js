@@ -76,7 +76,7 @@ export const PROJECTS = [
       "Learning platform with student/educator dashboards, courses, progress tracking, real‑time chat, AI chatbot (Gemini API), and Razorpay payments.",
     tech: ["MERN", "Gemini API", "Razorpay", "Realtime"],
     image: "/lms.png",
-    repo: "https://github.com/sakshigupta67",
+    repo: "https://github.com/sakshigupta67/Learning-Management-System",
     demo: "#",
   },
   {
@@ -85,7 +85,7 @@ export const PROJECTS = [
       "Healthcare web platform using Flask and deep learning (EfficientNet‑B1) to connect labs, doctors, and patients with automated dashboards and skin disease detection.",
     tech: ["Flask", "EfficientNet‑B1", "Healthcare", "Dashboards"],
     image: "/healthcare.png",
-    repo: "https://github.com/sakshigupta67",
+    repo: "https://github.com/sakshigupta67/VaidyaTek-Hackathon-Project",
     demo: "#",
   },
 ];
