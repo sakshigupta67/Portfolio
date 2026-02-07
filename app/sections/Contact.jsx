@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeIn } from "../components/anim";
 import { YOUR_EMAIL, SOCIALS } from "../data/profile";
-import { IconMail, IconPhone, IconMapPin, IconGithub, IconLinkedin } from "../components/Icons";
+import { IconMail, IconMapPin, IconGithub, IconLinkedin } from "../components/Icons";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -43,16 +43,6 @@ export default function Contact() {
               </div>
 
               <div className="space-y-3 sm:space-y-4">
-                <a 
-                  href={`tel:+917894567890`}
-                  className="flex items-center gap-3 sm:gap-4 text-sm sm:text-base text-gray-300 hover:text-primary-cyan transition-colors"
-                >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary-magenta/20 flex items-center justify-center">
-                    <IconPhone className="w-4 h-4 sm:w-5 sm:h-5 text-primary-magenta" />
-                  </div>
-                  <span>+91 7894567890</span>
-                </a>
-                
                 <a 
                   href={`mailto:${YOUR_EMAIL}`}
                   className="flex items-center gap-3 sm:gap-4 text-sm sm:text-base text-gray-300 hover:text-primary-cyan transition-colors"
