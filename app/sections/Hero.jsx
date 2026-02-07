@@ -94,8 +94,9 @@ export default function Hero() {
                 Contact
               </a>
               <a
-                href="/resume.pdf"
-                download
+                href="https://drive.google.com/file/d/1e0zA-IQEc5BWD8YE6FPKbXBl4HymksoT/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-5 sm:py-3 rounded-lg glass-card border border-primary-cyan/20 text-xs sm:text-sm font-semibold text-white transition-all duration-200 ease-out hover:border-primary-cyan/50 hover:-translate-y-0.5 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary-cyan/40"
               >
                 <svg
