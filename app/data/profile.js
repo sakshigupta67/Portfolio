@@ -3,6 +3,7 @@
 export const YOUR_NAME = "Sakshi Gupta";
 export const YOUR_ROLE = "MERN Stack Developer";
 export const YOUR_EMAIL = "sakshigupta678a@gmail.com";
+export const WEB3FORMS_KEY = "fc94d5e6-686a-475e-a23d-3cb36fe367b7";
 export const COLLEGE = "National Institute of Technology Manipur";
 export const DEGREE_SHORT = "B.Tech CSE";
 export const GRAD_EXPECTED = "Expected 2027";

@@ -3,19 +3,44 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeIn } from "../components/anim";
-import { YOUR_EMAIL, SOCIALS } from "../data/profile";
+import { YOUR_EMAIL, SOCIALS, WEB3FORMS_KEY } from "../data/profile";
 import { IconMail, IconMapPin, IconGithub, IconLinkedin } from "../components/Icons";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(null); // "success" | "error" | null
   const reduceMotion = useReducedMotion();
   const transition = reduceMotion ? { duration: 0 } : { duration: 0.6, ease: "easeOut" };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio Contact from ${form.name || "Someone"}`);
-    const body = encodeURIComponent(`${form.message}\n\nFrom: ${form.name} <${form.email}>`);
-    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+    setLoading(true);
+    setStatus(null);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus("success");
+        setForm({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus(null), 5000);
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -133,10 +158,18 @@ export default function Contact() {
                 
                 <button
                   type="submit"
-                  className="group inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-6 sm:py-3 rounded-full border border-primary-cyan/40 text-sm sm:text-base text-primary-cyan hover:bg-primary-cyan/10 transition-colors duration-300"
+                  disabled={loading}
+                  className="group inline-flex items-center gap-1.5 sm:gap-2 px-4 py-2 sm:px-6 sm:py-3 rounded-full border border-primary-cyan/40 text-sm sm:text-base text-primary-cyan hover:bg-primary-cyan/10 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Send message</span>
+                  <span>{loading ? "Sending..." : "Send message"}</span>
                 </button>
+
+                {status === "success" && (
+                  <p className="text-sm text-green-400 mt-2">Message received. I will respond as soon as possible.</p>
+                )}
+                {status === "error" && (
+                  <p className="text-sm text-red-400 mt-2">Something went wrong. Please try again.</p>
+                )}
               </form>
             </div>
           </div>
