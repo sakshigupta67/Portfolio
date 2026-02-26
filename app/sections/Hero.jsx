@@ -3,6 +3,14 @@
 import React, { useEffect, useRef } from "react";
 import { COLLEGE, DEGREE_SHORT, GRAD_EXPECTED, SOCIALS } from "../data/profile";
 import SocialIcon from "../components/SocialIcon";
+import Typewriter from "../components/Typewriter";
+
+const ROTATING_PHRASES = [
+  "MERN Stack Developer.",
+  "Full Stack Developer.",
+  "Problem Solver.",
+  "Software Engineer.",
+];
 
 export default function Hero() {
   const containerRef = useRef(null);
@@ -42,12 +50,21 @@ export default function Hero() {
             ref={containerRef}
             className="opacity-0 translate-y-2 transition-all duration-700 ease-out"
           >
-            <h1 className="font-heading text-3xl font-bold text-white sm:text-5xl lg:text-6xl">
-              Hi, I'm Sakshi
-            </h1>
-            <h2 className="mt-2 sm:mt-3 font-heading text-lg sm:text-2xl font-semibold">
-              <span className="text-gradient inline-block transition-transform duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.02] cursor-default">MERN Stack Developer.</span>
-            </h2>
+            {/* Reserve vertical space to prevent layout shift */}
+            <div className="min-h-[5.5rem] sm:min-h-[7.5rem] lg:min-h-[9rem]">
+              <h1 className="font-heading text-3xl font-bold text-white sm:text-5xl lg:text-6xl">
+                Hi, I&apos;m Sakshi
+              </h1>
+              <h2 className="mt-2 sm:mt-3 font-heading text-lg sm:text-2xl font-semibold">
+                <Typewriter
+                  phrases={ROTATING_PHRASES}
+                  typeSpeed={55}
+                  deleteSpeed={35}
+                  pauseTime={1500}
+                  className="text-gradient inline-block"
+                />
+              </h2>
+            </div>
 
             {/* College and degree details (with icon) */}
             <div className="mt-4 sm:mt-6">
