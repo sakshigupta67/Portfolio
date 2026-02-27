@@ -18,6 +18,7 @@ export default function Specialisations() {
     { title: "Operating Systems" },
     { title: "Software Engineering" },
     { title: "Database Management" },
+    { title: "Computer Network" },
   ];
 
   return (
