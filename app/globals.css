@@ -140,6 +140,180 @@ h1, h2, h3, h4, h5, h6 {
   animation: orbit 20s linear infinite;
 }
 
+/* ═══════════════════════════════════════════════
+   NOTEBOOK EXPERIENCE CARDS
+   3D flip, page-fold, content reveal, glow & depth
+   ═══════════════════════════════════════════════ */
+
+/* ── Base card ── */
+.notebook-card {
+  position: relative;
+  background: rgba(16, 4, 37, 0.6);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(12, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* 3D transform origin: left edge like a book spine */
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+
+  /* Smooth notebook-open transition */
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease,
+    filter 0.5s ease,
+    opacity 0.5s ease;
+
+  /* Prevent text selection flicker on click */
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .notebook-card {
+    padding: 1.5rem 1.75rem;
+    border-radius: 1rem;
+  }
+}
+
+/* ── Hover lift (when not open and no sibling open) ── */
+.notebook-card:not(.notebook-card--open):not(.notebook-card--dimmed):hover {
+  transform: rotateY(-4deg) translateZ(6px);
+  box-shadow:
+    0 8px 30px rgba(12, 255, 255, 0.12),
+    0 0 15px rgba(220, 0, 211, 0.08);
+  border-color: rgba(12, 255, 255, 0.25);
+}
+
+/* ── Open state: notebook page swings open ── */
+.notebook-card--open {
+  transform: rotateY(-12deg) translateZ(10px);
+  border-color: rgba(12, 255, 255, 0.35);
+  box-shadow:
+    0 14px 50px rgba(12, 255, 255, 0.18),
+    0 0 30px rgba(220, 0, 211, 0.12),
+    inset 0 0 20px rgba(12, 255, 255, 0.03);
+}
+
+/* ── Dimmed siblings: subtle blur + scale-down (focus effect) ── */
+.notebook-card--dimmed {
+  filter: blur(1.5px) brightness(0.6);
+  opacity: 0.65;
+  transform: scale(0.97);
+}
+
+/* ── Page fold / curl on right edge (::after pseudo-element) ── */
+.notebook-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 100%;
+  border-radius: 0 1rem 1rem 0;
+  pointer-events: none;
+  opacity: 0;
+
+  /* Gradient that mimics a page-curl shadow */
+  background: linear-gradient(
+    to left,
+    rgba(12, 255, 255, 0.06) 0%,
+    rgba(16, 4, 37, 0.3) 40%,
+    transparent 100%
+  );
+
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.notebook-card:hover::after,
+.notebook-card--open::after {
+  opacity: 1;
+}
+
+/* ── Header area (always visible) ── */
+.notebook-card__header {
+  position: relative;
+}
+
+/* ── "Click to open" hint ── */
+.notebook-card__hint {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(12, 255, 255, 0.4);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.notebook-card__hint--hidden {
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+}
+
+/* ── Body: hidden by default, revealed on open ── */
+.notebook-card__body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease 0.15s,
+    transform 0.5s ease 0.15s;
+}
+
+.notebook-card__body--visible {
+  max-height: 300px; /* generous cap; content is short */
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(12, 255, 255, 0.08);
+}
+
+/* ── Neon glow pulse on open card border ── */
+@keyframes notebook-glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 14px 50px rgba(12, 255, 255, 0.18),
+      0 0 30px rgba(220, 0, 211, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 14px 50px rgba(12, 255, 255, 0.28),
+      0 0 40px rgba(220, 0, 211, 0.2);
+  }
+}
+
+.notebook-card--open {
+  animation: notebook-glow-pulse 3s ease-in-out infinite;
+}
+
+/* ── Responsive: slightly reduce 3D intensity on small screens ── */
+@media (max-width: 639px) {
+  .notebook-card--open {
+    transform: rotateY(-8deg) translateZ(6px);
+  }
+
+  .notebook-card:not(.notebook-card--open):not(.notebook-card--dimmed):hover {
+    transform: rotateY(-3deg) translateZ(4px);
+  }
+
+  .notebook-card::after {
+    width: 20px;
+  }
+}
+
+/* ═══════════════════════════════════════════════ */
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
