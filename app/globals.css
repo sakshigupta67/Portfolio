@@ -140,6 +140,22 @@ h1, h2, h3, h4, h5, h6 {
   animation: orbit 20s linear infinite;
 }
 
+@keyframes skill-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.skill-float {
+  animation: skill-float 4.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-float {
+    animation: none;
+  }
+}
+
 /* ═══════════════════════════════════════════════
    NOTEBOOK EXPERIENCE CARDS
    3D flip, page-fold, content reveal, glow & depth
