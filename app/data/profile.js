@@ -139,4 +139,29 @@ export const CERTIFICATES = [
     cover: "/LOR.png",
     logo: "/gssoc.png",
   },
+  {
+    title: "AZ-900",
+    subtitle: "Microsoft Azure Fundamentals",
+    cover: "/AZ-900.png",
+    url:"https://drive.google.com/file/d/1t11KLtAUH7tEQNAg46oAsDsxYKlt_94D/view?usp=sharing"
+  },
+  {
+    title: "AI-900",
+    subtitle: "Microsoft Azure AI Fundamentals",
+    cover: "/AI-900.png",
+    url:"https://drive.google.com/file/d/1E4glKFkc8ESUNt4cBV9-6WV70NwEPjbC/view?usp=sharing"
+
+  },
+  {
+    title: "AB-730",
+    subtitle: "Microsoft AI Business Professionals Certificate",
+    cover: "/AB-730.png",
+    url:"https://drive.google.com/file/d/1DzizDr-cT8PZC_j3J-kK1HMQdw6pvTo2/view?usp=sharing"
+  },
+  {
+    title: "SC-900",
+    subtitle: "Microsoft Security, Compliance, and Identity Fundamentals",
+    cover: "/SC-900.png",
+    url:"https://drive.google.com/file/d/1BsuT9ISbQF94Lu-Git--LmZISJU7XQzy/view?usp=sharing"
+  },
 ];
