@@ -26,7 +26,6 @@ export const SOCIALS = {
 
 export const SKILLS = [
   "Java",
-  "C++",
   "HTML",
   "CSS",
   "JavaScript",
@@ -40,8 +39,13 @@ export const SKILLS = [
   "GitHub",
   "Postman",
   "REST APIs",
-  "Data Structures & Algorithms (Java)",
+  "Data Structures",
   "Cloud Integration",
+  "Microsoft Azure",
+  "Azure AI Foundry",
+  "Generative AI",
+  "Model Context Protocol",
+  "Docker",
 ];
 
 export const EXPERIENCE = [

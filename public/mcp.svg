@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Model Context Protocol">
+  <path fill="none" stroke="#8B5CF6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 7.5 12 4l6 3.5v6L12 17l-6-3.5z"/>
+  <path fill="none" stroke="#22D3EE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m6 7.5 6 3.5 6-3.5M12 11v6M3.5 10.5v4L9 17.7M20.5 10.5v4L15 17.7"/>
+  <circle cx="12" cy="4" r="1.5" fill="#F472B6"/>
+  <circle cx="3.5" cy="10.5" r="1.5" fill="#22D3EE"/>
+  <circle cx="20.5" cy="10.5" r="1.5" fill="#22D3EE"/>
+</svg>
