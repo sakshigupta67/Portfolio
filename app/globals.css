@@ -201,176 +201,146 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ═══════════════════════════════════════════════
-   NOTEBOOK EXPERIENCE CARDS
-   3D flip, page-fold, content reveal, glow & depth
-   ═══════════════════════════════════════════════ */
-
-/* ── Base card ── */
-.notebook-card {
+/* Experience: interactive career timeline */
+.experience-section {
   position: relative;
-  background: rgba(16, 4, 37, 0.6);
+  z-index: 1;
+  padding-top: 7rem;
+  scroll-margin-top: 5rem;
+}
+
+.experience-subtitle {
+  color: rgba(226, 232, 240, 0.58);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.35rem;
+  text-align: center;
+}
+
+.experience-timeline {
+  position: relative;
+}
+
+.experience-timeline__line {
+  position: absolute;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, var(--color-magenta), rgba(139, 92, 246, 0.8), var(--color-cyan));
+  opacity: 0.7;
+}
+
+.experience-timeline__items {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.experience-entry {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.experience-entry--left { justify-content: flex-start; padding-right: calc(50% + 2.5rem); }
+.experience-entry--right { justify-content: flex-end; padding-left: calc(50% + 2.5rem); }
+
+.experience-card-wrap { width: 100%; }
+
+.experience-node {
+  position: absolute;
+  z-index: 2;
+  top: 2rem;
+  left: 50%;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid rgba(12, 255, 255, 0.65);
+  border-radius: 9999px;
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 5px rgba(220, 0, 211, 0.08), 0 0 18px rgba(12, 255, 255, 0.35);
+  transform: translateX(-50%);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.experience-node span { display: block; width: 0.45rem; height: 0.45rem; margin: 0.27rem; border-radius: inherit; background: linear-gradient(135deg, var(--color-magenta), var(--color-cyan)); }
+.experience-node--active { border-color: var(--color-cyan); box-shadow: 0 0 0 7px rgba(12, 255, 255, 0.1), 0 0 26px rgba(12, 255, 255, 0.6); }
+.experience-entry:hover .experience-node { border-color: var(--color-cyan); box-shadow: 0 0 0 7px rgba(12, 255, 255, 0.08), 0 0 24px rgba(12, 255, 255, 0.5); }
+
+.experience-connector {
+  position: absolute;
+  z-index: 1;
+  top: 2.5rem;
+  width: 2.5rem;
+  height: 1px;
+  background: linear-gradient(to right, rgba(220, 0, 211, 0.28), rgba(12, 255, 255, 0.58));
+  opacity: 0.7;
+  transition: width 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease;
+}
+
+.experience-entry--left .experience-connector { right: 50%; }
+.experience-entry--right .experience-connector { left: 50%; transform: scaleX(-1); }
+.experience-connector--active, .experience-entry:hover .experience-connector { width: 3.2rem; opacity: 0.9; box-shadow: 0 0 10px rgba(12, 255, 255, 0.3); }
+
+.experience-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.35rem;
+  border: 1px solid rgba(139, 92, 246, 0.32);
+  border-radius: 0.9rem;
+  background: linear-gradient(145deg, rgba(29, 12, 56, 0.88), rgba(16, 4, 37, 0.78));
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(12, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 1.25rem 1.5rem;
   cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
-
-  /* 3D transform origin: left edge like a book spine */
-  transform-style: preserve-3d;
-  transform-origin: left center;
-  transform: rotateY(0deg);
-
-  /* Smooth notebook-open transition */
-  transition:
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.5s ease,
-    filter 0.5s ease,
-    opacity 0.5s ease;
-
-  /* Prevent text selection flicker on click */
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (min-width: 640px) {
-  .notebook-card {
-    padding: 1.5rem 1.75rem;
-    border-radius: 1rem;
-  }
+.experience-card--featured {
+  border-color: rgba(12, 255, 255, 0.42);
+  background: linear-gradient(145deg, rgba(34, 18, 68, 0.94), rgba(16, 4, 37, 0.82));
+  box-shadow: 0 8px 24px rgba(12, 255, 255, 0.06), inset 0 1px 0 rgba(12, 255, 255, 0.08);
 }
 
-/* ── Hover lift (when not open and no sibling open) ── */
-.notebook-card:not(.notebook-card--open):not(.notebook-card--dimmed):hover {
-  transform: rotateY(-4deg) translateZ(6px);
-  box-shadow:
-    0 8px 30px rgba(12, 255, 255, 0.12),
-    0 0 15px rgba(220, 0, 211, 0.08);
-  border-color: rgba(12, 255, 255, 0.25);
-}
+.experience-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 25%, rgba(12, 255, 255, 0.08) 50%, transparent 75%); transform: translateX(-120%); transition: transform 0.7s ease; }
+.experience-card:hover, .experience-card:focus-visible, .experience-card--open { transform: translateY(-3px); border-color: rgba(12, 255, 255, 0.62); box-shadow: 0 10px 28px rgba(12, 255, 255, 0.1), 0 0 20px rgba(220, 0, 211, 0.08); outline: none; }
+.experience-card:hover::before, .experience-card:focus-visible::before { transform: translateX(120%); }
 
-/* ── Open state: notebook page swings open ── */
-.notebook-card--open {
-  transform: rotateY(-12deg) translateZ(10px);
-  border-color: rgba(12, 255, 255, 0.35);
-  box-shadow:
-    0 14px 50px rgba(12, 255, 255, 0.18),
-    0 0 30px rgba(220, 0, 211, 0.12),
-    inset 0 0 20px rgba(12, 255, 255, 0.03);
-}
+.experience-card__topline { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.75rem; }
+.experience-card__index { color: rgba(12, 255, 255, 0.52); font-size: 0.7rem; letter-spacing: 0.12em; }
+.experience-card__category { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--color-cyan); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; }
+.experience-card__marker { width: 0.35rem; height: 0.35rem; border: 1px solid rgba(12, 255, 255, 0.7); border-radius: 9999px; box-shadow: 0 0 8px rgba(12, 255, 255, 0.4); }
+.experience-card__identity { display: flex; align-items: center; gap: 0.75rem; }
+.experience-card__logo { width: 2.1rem; height: 2.1rem; object-fit: contain; opacity: 0.92; }
+.experience-card__role { position: relative; color: white; font-family: 'Josefin Sans', sans-serif; font-size: 1.1rem; font-weight: 600; line-height: 1.35; }
+.experience-card__company { margin-top: 0.2rem; color: rgba(226, 232, 240, 0.62); font-size: 0.78rem; }
+.experience-card__date { margin-top: 0.45rem; color: rgba(226, 232, 240, 0.52); font-size: 0.74rem; }
+.experience-card__preview { margin-top: 0.8rem; color: rgba(226, 232, 240, 0.78); font-size: 0.82rem; line-height: 1.6; }
+.experience-card__actions { position: relative; display: grid; gap: 0.55rem; margin-top: 1.25rem; padding-top: 0.85rem; border-top: 1px solid rgba(12, 255, 255, 0.14); }
+.experience-card__cta, .experience-card__dashboard { display: flex; align-items: center; justify-content: space-between; width: 100%; color: rgba(12, 255, 255, 0.9); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-align: left; text-transform: uppercase; }
+.experience-card__cta { border: 0; background: transparent; cursor: pointer; padding: 0; transition: color 0.3s ease; }
+.experience-card__cta:hover, .experience-card__cta:focus-visible { color: #fff; outline: none; }
+.experience-card__dashboard { padding: 0.7rem 0.75rem; border: 1px solid rgba(220, 0, 211, 0.34); border-radius: 0.45rem; background: rgba(220, 0, 211, 0.07); color: #fff; text-decoration: none; transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; }
+.experience-card__dashboard:hover, .experience-card__dashboard:focus-visible { border-color: rgba(12, 255, 255, 0.64); background: rgba(12, 255, 255, 0.08); box-shadow: 0 0 18px rgba(12, 255, 255, 0.12); outline: none; }
+.experience-card__arrow { font-size: 1.25rem; line-height: 1; transition: transform 0.3s ease; }
+.experience-card:hover .experience-card__arrow, .experience-card:focus-visible .experience-card__arrow, .experience-card__dashboard:hover .experience-card__arrow, .experience-card__dashboard:focus-visible .experience-card__arrow { transform: translateX(0.35rem); }
+.experience-card__details { position: relative; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.45s ease, opacity 0.3s ease, margin-top 0.45s ease; }
+.experience-card__details--visible { max-height: 52rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(220, 0, 211, 0.2); opacity: 1; }
+.experience-card__details p { color: rgba(226, 232, 240, 0.86); font-size: 0.82rem; line-height: 1.7; }
+.experience-card__details-label { margin-bottom: 0.45rem; color: rgba(12, 255, 255, 0.68) !important; font-size: 0.62rem !important; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.experience-card__detail-group { margin-top: 1rem; }
+.experience-card__detail-group ul { display: grid; gap: 0.35rem; padding-left: 1rem; color: rgba(226, 232, 240, 0.78); font-size: 0.78rem; line-height: 1.55; list-style: disc; }
+.experience-card__chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.experience-card__chips span { padding: 0.28rem 0.45rem; border: 1px solid rgba(12, 255, 255, 0.16); border-radius: 9999px; color: rgba(226, 232, 240, 0.72); font-size: 0.65rem; }
 
-/* ── Dimmed siblings: subtle blur + scale-down (focus effect) ── */
-.notebook-card--dimmed {
-  filter: blur(1.5px) brightness(0.6);
-  opacity: 0.65;
-  transform: scale(0.97);
-}
-
-/* ── Page fold / curl on right edge (::after pseudo-element) ── */
-.notebook-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 32px;
-  height: 100%;
-  border-radius: 0 1rem 1rem 0;
-  pointer-events: none;
-  opacity: 0;
-
-  /* Gradient that mimics a page-curl shadow */
-  background: linear-gradient(
-    to left,
-    rgba(12, 255, 255, 0.06) 0%,
-    rgba(16, 4, 37, 0.3) 40%,
-    transparent 100%
-  );
-
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.notebook-card:hover::after,
-.notebook-card--open::after {
-  opacity: 1;
-}
-
-/* ── Header area (always visible) ── */
-.notebook-card__header {
-  position: relative;
-}
-
-/* ── "Click to open" hint ── */
-.notebook-card__hint {
-  display: inline-block;
-  margin-top: 0.6rem;
-  font-size: 0.6rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(12, 255, 255, 0.4);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.notebook-card__hint--hidden {
-  opacity: 0;
-  transform: translateY(-4px);
-  pointer-events: none;
-}
-
-/* ── Body: hidden by default, revealed on open ── */
-.notebook-card__body {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.5s ease 0.15s,
-    transform 0.5s ease 0.15s;
-}
-
-.notebook-card__body--visible {
-  max-height: 300px; /* generous cap; content is short */
-  opacity: 1;
-  transform: translateY(0);
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(12, 255, 255, 0.08);
-}
-
-/* ── Neon glow pulse on open card border ── */
-@keyframes notebook-glow-pulse {
-  0%, 100% {
-    box-shadow:
-      0 14px 50px rgba(12, 255, 255, 0.18),
-      0 0 30px rgba(220, 0, 211, 0.12);
-  }
-  50% {
-    box-shadow:
-      0 14px 50px rgba(12, 255, 255, 0.28),
-      0 0 40px rgba(220, 0, 211, 0.2);
-  }
-}
-
-.notebook-card--open {
-  animation: notebook-glow-pulse 3s ease-in-out infinite;
-}
-
-/* ── Responsive: slightly reduce 3D intensity on small screens ── */
-@media (max-width: 639px) {
-  .notebook-card--open {
-    transform: rotateY(-8deg) translateZ(6px);
-  }
-
-  .notebook-card:not(.notebook-card--open):not(.notebook-card--dimmed):hover {
-    transform: rotateY(-3deg) translateZ(4px);
-  }
-
-  .notebook-card::after {
-    width: 20px;
-  }
+@media (max-width: 767px) {
+  .experience-section { padding-top: 6rem; }
+  .experience-timeline__line { left: 0.65rem; }
+  .experience-entry--left, .experience-entry--right { justify-content: flex-start; padding-left: 2rem; padding-right: 0; }
+  .experience-node { left: 0.65rem; }
+  .experience-entry--left .experience-connector, .experience-entry--right .experience-connector { left: 0.65rem; right: auto; width: 1.35rem; transform: none; }
+  .experience-connector--active, .experience-entry:hover .experience-connector { width: 1.7rem; }
+  .experience-card { padding: 1.2rem; }
 }
 
 /* ═══════════════════════════════════════════════ */

@@ -38,32 +38,31 @@ function sortExperiencesByDate(experiences) {
    Notebook Experience Card
    ────────────────────────────────────────────── */
 
-function NotebookCard({ exp, idx, openIdx, onToggle }) {
+function NotebookCard({ exp, idx, openIdx, onToggle, reduceMotion, activeIdx, onActivate }) {
   const isOpen = openIdx === idx;
-  const isSiblingOpen = openIdx !== null && openIdx !== idx;
+  const isActive = activeIdx === idx || isOpen;
+  const isMicrosoft = Boolean(exp.dashboardUrl);
 
   return (
-    <article
-      className={`relative flex items-start gap-4 sm:gap-6 ${
-        idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-      }`}
+    <motion.article
+      className={`experience-entry experience-entry--${idx % 2 === 0 ? "left" : "right"}`}
+      initial={{ opacity: 0, x: reduceMotion ? 0 : idx % 2 === 0 ? -20 : 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: reduceMotion ? 0 : 0.6, ease: "easeOut" }}
+      onViewportEnter={() => onActivate(idx)}
     >
-      {/* Timeline dot */}
-      <div className="absolute left-4 md:left-1/2 w-2 h-2 sm:w-3 sm:h-3 -translate-x-1/2 rounded-full bg-primary-cyan shadow-glow z-10" />
+      <div className={`experience-node ${isActive ? "experience-node--active" : ""}`} aria-hidden="true">
+        <span />
+      </div>
+      <div className={`experience-connector ${isActive ? "experience-connector--active" : ""}`} aria-hidden="true" />
 
-      {/* Perspective wrapper for 3D notebook effect */}
-      <div
-        className={`ml-10 sm:ml-12 md:ml-0 md:w-1/2 ${
-          idx % 2 === 0 ? "md:pr-12" : "md:pl-12"
-        }`}
-        style={{ perspective: "1200px" }}
-      >
+      <div className="experience-card-wrap">
         <div
-          className={`notebook-card ${isOpen ? "notebook-card--open" : ""} ${
-            isSiblingOpen ? "notebook-card--dimmed" : ""
-          }`}
+          className={`experience-card ${isMicrosoft ? "experience-card--featured" : ""} ${isOpen ? "experience-card--open" : ""}`}
           onClick={() => onToggle(idx)}
           onKeyDown={(e) => {
+            if (e.target !== e.currentTarget) return;
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               onToggle(idx);
@@ -72,43 +71,78 @@ function NotebookCard({ exp, idx, openIdx, onToggle }) {
           role="button"
           tabIndex={0}
           aria-expanded={isOpen}
+          aria-controls={`experience-details-${idx}`}
         >
-          {/* ── Card front: always visible ── */}
-          <div className="notebook-card__header">
-            <h3 className="font-heading text-sm sm:text-lg font-semibold text-white leading-snug">
-              {exp.role}
-            </h3>
-            <p className="text-primary-cyan text-xs sm:text-sm mt-1">
-              {exp.company}
-            </p>
-            <p className="text-[10px] sm:text-xs text-gray-500 mt-1.5">
-              {exp.duration}
-            </p>
-
-            {/* Expand hint */}
-            <span
-              className={`notebook-card__hint ${isOpen ? "notebook-card__hint--hidden" : ""}`}
-              aria-hidden="true"
-            >
-              Click to open
+          <div className="experience-card__topline">
+            <span className="experience-card__index">0{idx + 1}</span>
+            <span className="experience-card__category">
+              <span className="experience-card__marker" aria-hidden="true" />
+              {exp.category || exp.company}
             </span>
           </div>
-
-          {/* ── Inner content: revealed on open ── */}
-          <div
-            className={`notebook-card__body ${
-              isOpen ? "notebook-card__body--visible" : ""
-            }`}
-          >
-            <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-              {exp.description}
-            </p>
+          <div className="experience-card__identity">
+            {exp.logo && <img className="experience-card__logo" src={exp.logo} alt="" aria-hidden="true" />}
+            <div>
+              <h3 className="experience-card__role">{exp.role}</h3>
+              <p className="experience-card__company">{exp.company}</p>
+            </div>
           </div>
+          <p className="experience-card__date">{exp.duration}</p>
+          <p className="experience-card__preview">{exp.description}</p>
 
-          {/* Page fold pseudo-element is handled via CSS ::after */}
+          {isMicrosoft ? (
+            <div className="experience-card__actions">
+              <button className="experience-card__cta experience-card__expand" type="button" onClick={(event) => { event.stopPropagation(); onToggle(idx); }} aria-expanded={isOpen}>
+                <span>{isOpen ? "Close details" : "Explore experience"}</span>
+                <span className="experience-card__arrow">{isOpen ? "↑" : "→"}</span>
+              </button>
+              <a className="experience-card__dashboard" href={exp.dashboardUrl} target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>
+                <span>View internship dashboard</span>
+                <span className="experience-card__arrow">↗</span>
+              </a>
+            </div>
+          ) : (
+            <button className="experience-card__cta" type="button" onClick={(event) => { event.stopPropagation(); onToggle(idx); }} aria-expanded={isOpen}>
+              <span>{isOpen ? "Close details" : "Explore experience"}</span>
+              <span className="experience-card__arrow">{isOpen ? "↑" : "→"}</span>
+            </button>
+          )}
+
+          <div
+            id={`experience-details-${idx}`}
+            className={`experience-card__details ${isOpen ? "experience-card__details--visible" : ""}`}
+            aria-hidden={!isOpen}
+          >
+            <p className="experience-card__details-label">Additional details</p>
+            <p>{exp.description}</p>
+            {exp.contributions && (
+              <div className="experience-card__detail-group">
+                <p className="experience-card__details-label">Key contributions</p>
+                <ul>{exp.contributions.map((item) => <li key={item}>{item}</li>)}</ul>
+              </div>
+            )}
+            {exp.technologies && (
+              <div className="experience-card__detail-group">
+                <p className="experience-card__details-label">Technologies</p>
+                <div className="experience-card__chips">{exp.technologies.map((technology) => <span key={technology}>{technology}</span>)}</div>
+              </div>
+            )}
+            {exp.credentials && (
+              <div className="experience-card__detail-group">
+                <p className="experience-card__details-label">Microsoft credentials</p>
+                <div className="experience-card__chips">{exp.credentials.map((credential) => <span key={credential}>{credential}</span>)}</div>
+              </div>
+            )}
+            {exp.highlights && (
+              <div className="experience-card__detail-group">
+                <p className="experience-card__details-label">Highlights</p>
+                <ul>{exp.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
@@ -129,6 +163,7 @@ export default function Experience() {
 
   // Track which card is currently "opened" (null = none)
   const [openIdx, setOpenIdx] = useState(null);
+  const [activeIdx, setActiveIdx] = useState(null);
 
   // Toggle open/close — clicking an open card closes it
   const handleToggle = useCallback((idx) => {
@@ -139,7 +174,7 @@ export default function Experience() {
     <section
       id="experience"
       aria-labelledby="xp-heading"
-      className="py-12 sm:py-20"
+      className="experience-section py-12 sm:py-20"
     >
       <motion.div
         variants={fadeIn("up")}
@@ -148,18 +183,16 @@ export default function Experience() {
         viewport={{ once: true, amount: 0.3 }}
         transition={transition}
       >
-        <h2 id="xp-heading" className="section-heading mb-6 sm:mb-10">
+        <h2 id="xp-heading" className="section-heading mb-2">
           Experience
         </h2>
+        <p className="experience-subtitle">Where I&apos;ve built, contributed, and learned.</p>
 
-        <div className="relative max-w-3xl mx-auto">
+        <div className="experience-timeline max-w-5xl mx-auto mt-8 sm:mt-10">
           {/* Timeline line */}
-          <div
-            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary-magenta via-primary-cyan to-transparent"
-            aria-hidden="true"
-          />
+          <div className="experience-timeline__line" aria-hidden="true" />
 
-          <div className="space-y-6 sm:space-y-8">
+          <div className="experience-timeline__items">
             {sortedExperiences.map((exp, idx) => (
               <NotebookCard
                 key={idx}
@@ -167,6 +200,9 @@ export default function Experience() {
                 idx={idx}
                 openIdx={openIdx}
                 onToggle={handleToggle}
+                reduceMotion={reduceMotion}
+                activeIdx={activeIdx}
+                onActivate={setActiveIdx}
               />
             ))}
           </div>

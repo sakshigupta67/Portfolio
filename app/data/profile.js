@@ -50,18 +50,54 @@ export const SKILLS = [
 
 export const EXPERIENCE = [
   {
-    role: "Team Lead — Smart India Hackathon 2024",
-    company: "National Program",
-    duration: "Aug 2024 — Nov 2024",
+    role: "Technical Consultant Intern",
+    company: "Microsoft",
+    category: "Professional Experience",
+    duration: "May 25, 2026 — July 17, 2026",
     description:
-      "Led a team of 6 to develop an AI‑powered LMS with dashboards, analytics, and a chatbot. Coordinated tasks, managed risks, and integrated feedback to deliver a functional solution aligned with user needs.",
+      "Worked on AI-powered enterprise workflow automation and cloud solutions, contributing to interview scheduling workflows, Azure data engineering, and accessibility-focused solutions.",
+    logo: "/microsoft.svg",
+    dashboardUrl: "https://microsoft-technical-consultant-inte.vercel.app/dashboard",
+    contributions: [
+      "Interview Slot Manager: automated scheduling with calendar, Teams, and Excel integrations.",
+      "Aidly: accessibility-focused browser extension for Chrome and Edge.",
+      "Azure data engineering pipeline using the Tokyo Olympics dataset.",
+    ],
+    technologies: [
+      "Microsoft Graph API",
+      "Microsoft Entra ID",
+      "WorkIQ MCP",
+      "Azure Foundry",
+      "Microsoft Teams",
+      "Microsoft Excel",
+      "Power Automate",
+      "Azure Data Factory",
+      "Azure Data Lake Storage Gen2",
+      "React",
+    ],
+    credentials: ["AZ-900", "AI-900", "SC-900", "AB-730"],
+    highlights: [
+      "Completed 4 Microsoft certifications during the internship.",
+      "Delivered multiple project demos.",
+      "Supported final project handover and documentation.",
+      "Resolved a key MCP access blocker.",
+    ],
   },
   {
-    role: "Contributor — GirlScript Summer of Code 2025",
-    company: "Open Source",
-    duration: "Jul 2025 — Present",
+    role: "Contributor",
+    company: "GirlScript Summer of Code 2025",
+    category: "Open Source",
+    duration: "July 2025 — October 2025",
     description:
-      "Enhanced UI/UX and backend features across projects, improving performance and usability. Collaborated in reviews and integrations; ranked among top 25 contributors.",
+      "Enhanced UI/UX and backend features across projects, improving performance and usability. Collaborated in reviews and integrations; ranked among top contributors.",
+  },
+  {
+    role: "Team Lead",
+    company: "Smart India Hackathon 2024",
+    category: "National Program",
+    duration: "August 2024 — November 2024",
+    description:
+      "Led a team of 6 to develop an AI‑powered LMS with dashboards, analytics, and a chatbot. Coordinated tasks, managed risks, and integrated feedback to deliver a functional solution aligned with user needs.",
   },
 ];
 
