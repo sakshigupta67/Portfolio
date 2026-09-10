@@ -1,5 +1,6 @@
 import "./globals.css";
 import ParticleBackground from "./components/ParticleBackground";
+import CustomCursor from "./components/CustomCursor";
 
 export const metadata = {
   title: 'Resume | Sakshi Gupta',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
         className="min-h-screen bg-primary-dark text-white antialiased selection:bg-primary-magenta/30 selection:text-white font-body"
       >
         <ParticleBackground />
+        <CustomCursor />
         {children}
       </body>
     </html>
