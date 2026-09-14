@@ -84,7 +84,7 @@ export const EXPERIENCE = [
     ],
   },
   {
-    role: "Contributor",
+    role: "Open Source Contributor",
     company: "GirlScript Summer of Code 2025",
     category: "Open Source",
     duration: "July 2025 — October 2025",
