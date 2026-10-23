@@ -2,19 +2,26 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const TRAIL_LENGTH = 6;
 const INTERACTIVE_SELECTOR =
-  "a, button, [role=\"button\"], input, textarea, select, summary, [data-cursor=\"interactive\"]";
+  "a, button, [role=\"button\"], summary, [data-cursor=\"interactive\"]";
+const TEXT_EDITING_SELECTOR =
+  "input:not([type=\"button\"]):not([type=\"submit\"]):not([type=\"reset\"]):not([type=\"checkbox\"]):not([type=\"radio\"]):not([type=\"range\"]):not([disabled]), textarea:not([disabled]), [contenteditable=\"true\"]";
 
 function getInteractiveTarget(target) {
   if (!(target instanceof Element)) return null;
-  return target.closest(INTERACTIVE_SELECTOR);
+  const element = target.closest(
+    `${INTERACTIVE_SELECTOR}, ${TEXT_EDITING_SELECTOR}, select`
+  );
+  if (!element || element.hasAttribute("disabled") || element.getAttribute("aria-disabled") === "true") {
+    return null;
+  }
+  return element;
 }
 
 function getCursorVariant(target) {
   const interactive = getInteractiveTarget(target);
   if (!interactive) return "default";
-  if (interactive.matches(".experience-card, [data-cursor=\"card\"]")) return "card";
+  if (interactive.matches(TEXT_EDITING_SELECTOR)) return "text";
   if (interactive.matches("a[href^=\"http\"]")) return "external";
   return "interactive";
 }
@@ -24,14 +31,10 @@ export default function CustomCursor() {
   const rootRef = useRef(null);
   const dotRef = useRef(null);
   const ringRef = useRef(null);
-  const glowRef = useRef(null);
-  const trailRefs = useRef([]);
   const frameRef = useRef(null);
-  const hideTimeoutRef = useRef(null);
   const clickTimeoutRef = useRef(null);
   const pointerRef = useRef({ x: 0, y: 0 });
   const ringPositionRef = useRef({ x: 0, y: 0 });
-  const trailPositionRef = useRef([]);
   const visibleRef = useRef(false);
   const reducedMotionRef = useRef(false);
 
@@ -49,8 +52,6 @@ export default function CustomCursor() {
     const root = rootRef.current;
     const dot = dotRef.current;
     const ring = ringRef.current;
-    const glow = glowRef.current;
-    const trail = trailRefs.current;
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     reducedMotionRef.current = reducedMotionQuery.matches;
@@ -77,20 +78,6 @@ export default function CustomCursor() {
       ringPosition.x += (pointer.x - ringPosition.x) * easing;
       ringPosition.y += (pointer.y - ringPosition.y) * easing;
       setPosition(ring, ringPosition.x, ringPosition.y);
-      setPosition(glow, ringPosition.x, ringPosition.y);
-
-      if (!reducedMotionRef.current) {
-        trailPositionRef.current = trailPositionRef.current.map((position, index) => {
-          const target = index === 0 ? ringPosition : trailPositionRef.current[index - 1];
-          const trailEasing = 0.22 - index * 0.018;
-          const next = {
-            x: position.x + (target.x - position.x) * trailEasing,
-            y: position.y + (target.y - position.y) * trailEasing,
-          };
-          setPosition(trail[index], next.x, next.y);
-          return next;
-        });
-      }
 
       frameRef.current = requestAnimationFrame(animate);
     };
@@ -102,16 +89,12 @@ export default function CustomCursor() {
       if (!visibleRef.current) {
         visibleRef.current = true;
         ringPositionRef.current = { x, y };
-        trailPositionRef.current = Array.from({ length: TRAIL_LENGTH }, () => ({ x, y }));
         root.classList.add("custom-cursor--visible");
       }
 
       setPosition(dot, x, y);
-      if (!frameRef.current) frameRef.current = requestAnimationFrame(animate);
-    };
-
-    const updateVariant = (event) => {
       root.dataset.variant = getCursorVariant(event.target);
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(animate);
     };
 
     const hideCursor = () => {
@@ -134,14 +117,12 @@ export default function CustomCursor() {
     };
 
     window.addEventListener("pointermove", showAtPointer, { passive: true });
-    window.addEventListener("pointerover", updateVariant, { passive: true });
     window.addEventListener("pointerout", hideOnViewportExit, { passive: true });
     window.addEventListener("pointerleave", hideCursor);
     window.addEventListener("pointerdown", pulseOnClick, { passive: true });
 
     return () => {
       window.removeEventListener("pointermove", showAtPointer);
-      window.removeEventListener("pointerover", updateVariant);
       window.removeEventListener("pointerout", hideOnViewportExit);
       window.removeEventListener("pointerleave", hideCursor);
       window.removeEventListener("pointerdown", pulseOnClick);
@@ -156,17 +137,6 @@ export default function CustomCursor() {
 
   return (
     <div ref={rootRef} className="custom-cursor" data-variant="default" aria-hidden="true">
-      <span ref={glowRef} className="custom-cursor__glow" />
-      {Array.from({ length: TRAIL_LENGTH }, (_, index) => (
-        <span
-          key={index}
-          ref={(element) => {
-            trailRefs.current[index] = element;
-          }}
-          className="custom-cursor__trail"
-          style={{ "--trail-index": index }}
-        />
-      ))}
       <span ref={ringRef} className="custom-cursor__ring" />
       <span ref={dotRef} className="custom-cursor__dot" />
     </div>
