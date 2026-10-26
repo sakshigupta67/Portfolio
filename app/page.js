@@ -27,7 +27,7 @@ export default function Page() {
         Skip to content
       </a>
       <Navbar active={active} />
-      <main id="home" className="max-w-6xl mx-auto px-4 relative">
+      <main className="max-w-6xl mx-auto px-4 relative">
         <Hero />
         <About />
         <Skills />

@@ -23,9 +23,18 @@ export default function RotatingTypewriter({
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const timerRef = useRef(null);
 
   const currentPhrase = phrases[phraseIndex] || "";
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateReducedMotion = () => setReducedMotion(mediaQuery.matches);
+    updateReducedMotion();
+    mediaQuery.addEventListener("change", updateReducedMotion);
+    return () => mediaQuery.removeEventListener("change", updateReducedMotion);
+  }, []);
 
   const tick = useCallback(() => {
     if (!isDeleting) {
@@ -50,17 +59,25 @@ export default function RotatingTypewriter({
   }, [displayed, isDeleting, currentPhrase, pauseTime, phrases.length]);
 
   useEffect(() => {
+    if (reducedMotion || phrases.length === 0) {
+      clearTimeout(timerRef.current);
+      setDisplayed(phrases[0] || "");
+      setPhraseIndex(0);
+      setIsDeleting(false);
+      return undefined;
+    }
+
     const speed = isDeleting ? deleteSpeed : typeSpeed;
     timerRef.current = setTimeout(tick, speed);
     return () => clearTimeout(timerRef.current);
-  }, [tick, isDeleting, deleteSpeed, typeSpeed]);
+  }, [tick, isDeleting, deleteSpeed, typeSpeed, reducedMotion, phrases]);
 
   return (
     <span
       aria-label={phrases.join(", ")}
-      aria-live="polite"
+      aria-live={reducedMotion ? "polite" : "off"}
     >
-      <span className={className}>{displayed}</span>
+      <span className={className}>{displayed || (reducedMotion ? phrases[0] : "")}</span>
       <span
         className={`typewriter-cursor ${cursorClass}`}
         aria-hidden="true"

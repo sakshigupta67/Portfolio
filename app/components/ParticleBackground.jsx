@@ -41,6 +41,8 @@ export default function ParticleBackground() {
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let isReducedMotion = reducedMotionQuery.matches;
     let width = window.innerWidth;
     let height = window.innerHeight;
 
@@ -97,7 +99,18 @@ export default function ParticleBackground() {
 
     // Initialize
     resize();
-    animate();
+    const updateMotion = () => {
+      isReducedMotion = reducedMotionQuery.matches;
+      if (isReducedMotion) {
+        if (animationRef.current) cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      } else if (!animationRef.current) {
+        animate();
+      }
+    };
+
+    if (!isReducedMotion) animate();
+    reducedMotionQuery.addEventListener("change", updateMotion);
 
     // Handle resize
     window.addEventListener("resize", resize);
@@ -105,6 +118,7 @@ export default function ParticleBackground() {
     // Cleanup
     return () => {
       window.removeEventListener("resize", resize);
+      reducedMotionQuery.removeEventListener("change", updateMotion);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }

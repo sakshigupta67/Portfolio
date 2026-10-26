@@ -36,6 +36,62 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
+.hero-section {
+  min-height: min(760px, calc(100vh - 4rem));
+  display: flex;
+  align-items: center;
+}
+
+.hero-eyebrow {
+  color: rgba(12, 255, 255, 0.72);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.hero-positioning {
+  text-wrap: balance;
+}
+
+.hero-role {
+  min-height: 2rem;
+}
+
+.hero-typewriter-slot {
+  display: inline-block;
+  min-width: min(100%, 22ch);
+}
+
+.hero-visual {
+  padding: 2.5rem 1.5rem 2rem;
+}
+
+.hero-orbit {
+  pointer-events: none;
+  border-radius: 9999px;
+  transform: rotate(-18deg);
+}
+
+.hero-visual-label {
+  font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 767px) {
+  .hero-section {
+    min-height: auto;
+  }
+
+  .hero-copy {
+    max-width: 40rem;
+  }
+
+  .hero-visual {
+    padding-top: 2rem;
+  }
+}
+
 /* Gradient border */
 .gradient-border {
   position: relative;
@@ -282,6 +338,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-copy,
+  .hero-primary-action,
+  .hero-visual {
+    transition: none;
+  }
+
+  .hero-primary-action:hover,
+  .hero-visual {
+    transform: none;
+  }
+
   .custom-cursor__ring {
     transition-duration: 0.001ms;
   }
